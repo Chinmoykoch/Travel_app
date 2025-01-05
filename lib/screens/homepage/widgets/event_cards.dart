@@ -52,7 +52,7 @@ class EventCards extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -61,14 +61,14 @@ class EventCards extends StatelessWidget {
                     SizedBox(width: width * 0.2),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.location_on,
                           color: Color(0xFF51D779),
                         ),
                         const SizedBox(width: 5),
                         Text(
                           location,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -77,7 +77,7 @@ class EventCards extends StatelessWidget {
                 // Time Text
                 Text(
                   time,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),

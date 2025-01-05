@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:traver/screens/homepage/homepage.dart';
+import 'package:traver/navigation.dart';
 
 class OtpScreen extends StatelessWidget {
   final String phoneNumber;
@@ -78,7 +78,7 @@ class OtpScreen extends StatelessWidget {
               ),
               onPressed: () {
                 if (otpController.text.length == 6) {
-                  Get.to(() => const Homepage());
+                  Get.to(() => NavigationScreen());
                 }
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('OTP Verified!')),
