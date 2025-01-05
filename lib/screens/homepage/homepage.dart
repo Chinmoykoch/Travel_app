@@ -228,8 +228,11 @@ class Homepage extends StatelessWidget {
                     separatorBuilder: (context, index) => const SizedBox(
                       width: 10,
                     ),
-                    itemBuilder: (context, index) =>
-                        CityCards(width: width, height: height),
+                    itemBuilder: (context, index) => CityCards(
+                        image: 'assets/trip_packages/event_1.png',
+                        title: 'Shibuya',
+                        width: width,
+                        height: height),
                   ),
                 ),
               ),
@@ -242,14 +245,17 @@ class Homepage extends StatelessWidget {
 }
 
 class CityCards extends StatelessWidget {
-  const CityCards({
-    super.key,
-    required this.width,
-    required this.height,
-  });
+  const CityCards(
+      {super.key,
+      required this.width,
+      required this.height,
+      required this.image,
+      required this.title});
 
   final double width;
   final double height;
+
+  final String image, title;
 
   @override
   Widget build(BuildContext context) {
@@ -261,7 +267,7 @@ class CityCards extends StatelessWidget {
             width: width / 2.5,
             height: height / 7,
             child: Image.asset(
-              'assets/trip_packages/event_1.png',
+              image,
               fit: BoxFit.cover,
             ),
           ),
@@ -270,7 +276,7 @@ class CityCards extends StatelessWidget {
             bottom: 10,
             left: 10,
             child: Text(
-              'Shibuya',
+              title,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ))
       ],
