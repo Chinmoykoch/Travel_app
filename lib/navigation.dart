@@ -11,24 +11,53 @@ class NavigationScreen extends StatelessWidget {
 
   final controller = Get.put(NavigationController());
 
+  final Color selectedColor =
+      Color.fromARGB(255, 0, 128, 64); // Selected state color
+  final Color unselectedColor = Colors.grey; // Unselected state color
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Obx(
-        () => NavigationBar(
-          height: 70,
-          elevation: 0,
-          selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) =>
-              controller.selectedIndex.value = index,
-          destinations: const [
-            NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
-            NavigationDestination(
-                icon: Icon(Iconsax.airplane), label: 'My Trips'),
-            NavigationDestination(
-                icon: Icon(Iconsax.note_favorite), label: 'WishLists'),
-            NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
-          ],
+        () => NavigationBarTheme(
+          data: NavigationBarThemeData(
+            indicatorColor: Color.fromARGB(255, 171, 239, 192),
+            labelTextStyle: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: selectedColor,
+                );
+              }
+              return TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: unselectedColor,
+              );
+            }),
+            iconTheme: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return IconThemeData(color: selectedColor);
+              }
+              return IconThemeData(color: unselectedColor);
+            }),
+          ),
+          child: NavigationBar(
+            height: 70,
+            elevation: 0,
+            selectedIndex: controller.selectedIndex.value,
+            onDestinationSelected: (index) =>
+                controller.selectedIndex.value = index,
+            destinations: const [
+              NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
+              NavigationDestination(
+                  icon: Icon(Iconsax.airplane), label: 'My Trips'),
+              NavigationDestination(
+                  icon: Icon(Iconsax.note_favorite), label: 'WishLists'),
+              NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
+            ],
+          ),
         ),
       ),
       body: Obx(() => controller.screens[controller.selectedIndex.value]),

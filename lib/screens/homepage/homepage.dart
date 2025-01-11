@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:traver/screens/homepage/widgets/city_cards.dart';
 import 'package:traver/screens/homepage/widgets/event_cards.dart';
+import 'package:traver/screens/homepage/widgets/event_happenings/event_happenings.dart';
+import 'package:traver/screens/homepage/widgets/hotel_cards.dart';
 import 'package:traver/screens/homepage/widgets/search_screen/search_screen.dart';
+import '../../utils/constants/constant_data.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -148,21 +154,26 @@ class Homepage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Event Happenings',
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    Spacer(),
-                    Text(
-                      'View All',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF51D779),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => EventHappenings());
+                      },
+                      child: const Text(
+                        'View All',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF51D779),
+                        ),
                       ),
                     )
                   ],
@@ -203,7 +214,7 @@ class Homepage extends StatelessWidget {
                   children: [
                     Text('Best Cities to explore',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     Spacer(),
                     Text(
                       'View all',
@@ -224,17 +235,111 @@ class Homepage extends StatelessWidget {
                   height: height / 7,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 4,
+                    itemCount: citiesData.length,
                     separatorBuilder: (context, index) => const SizedBox(
                       width: 10,
                     ),
-                    itemBuilder: (context, index) => CityCards(
-                        image: 'assets/trip_packages/event_1.png',
-                        title: 'Shibuya',
-                        width: width,
-                        height: height),
+                    itemBuilder: (context, index) {
+                      final cityData = citiesData[index];
+                      return CityCards(
+                          width: width,
+                          height: height,
+                          image: cityData['image']!,
+                          title: cityData['name']!);
+                    },
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Best Packages',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => EventHappenings());
+                      },
+                      child: const Text(
+                        'View All',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF51D779),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8),
+                child: SizedBox(
+                  height: height / 3.8,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: hotelList.length,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      final hotelData = hotelList[index];
+                      return HotelCards(
+                          image: hotelData['image']!,
+                          name: hotelData['name']!,
+                          location: hotelData['location']!,
+                          rating: hotelData['rating']!,
+                          user: hotelData['user']!,
+                          height: height,
+                          width: width);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    Text('Best Packages',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Spacer(),
+                    Text(
+                      'View all',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF51D779),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TourPackages(width: width, height: height),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TourPackages(width: width, height: height),
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
@@ -244,42 +349,101 @@ class Homepage extends StatelessWidget {
   }
 }
 
-class CityCards extends StatelessWidget {
-  const CityCards(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.image,
-      required this.title});
+class TourPackages extends StatelessWidget {
+  const TourPackages({
+    super.key,
+    required this.width,
+    required this.height,
+  });
 
   final double width;
   final double height;
 
-  final String image, title;
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: width / 2.5,
-            height: height / 7,
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+              color: const Color.fromARGB(255, 199, 198, 198), width: .8),
+          borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(
+                width: width * 0.3,
+                height: height * 0.12,
+                child: Image.asset(
+                  'assets/trip_packages/pack_1.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Majestic Manali',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Iconsax.heart)
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Iconsax.location,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      'Himachal Pradesh',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(Iconsax.timer_1),
+                    Text('4 days & 3 nights'),
+                  ],
+                ),
+                // Row(
+                //   children: [
+                //     Text('Rs.'),
+                //     const SizedBox(
+                //       width: 4,
+                //     ),
+                //     Text('20000'),
+                //     const SizedBox(
+                //       width: 2,
+                //     ),
+                //     Text('/person')
+                //   ],
+                // ),
+              ],
+            ),
+          ],
         ),
-        Positioned(
-            bottom: 10,
-            left: 10,
-            child: Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ))
-      ],
+      ),
     );
   }
 }

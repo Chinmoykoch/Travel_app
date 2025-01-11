@@ -16,6 +16,7 @@ dependencies:
   iconsax: ^0.0.8
   cupertino_icons: ^1.0.8
   animated_text_kit: ^4.2.2
+  font_awesome_flutter: ^10.8.0
 
 dev_dependencies:
   flutter_test:
