@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:get/get.dart';
 import 'package:traver/screens/homepage/homepage.dart';
-import 'package:traver/screens/my_trips/my_trips.dart';
+import 'package:traver/screens/my_trips/my_bookings.dart';
 import 'package:traver/screens/profile/profile.dart';
 import 'package:traver/screens/wishlists/wishlists.dart';
 
@@ -11,9 +11,8 @@ class NavigationScreen extends StatelessWidget {
 
   final controller = Get.put(NavigationController());
 
-  final Color selectedColor =
-      Color.fromARGB(255, 0, 128, 64); // Selected state color
-  final Color unselectedColor = Colors.grey; // Unselected state color
+  final Color selectedColor = Color.fromARGB(255, 0, 128, 64);
+  final Color unselectedColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +35,14 @@ class NavigationScreen extends StatelessWidget {
                 color: unselectedColor,
               );
             }),
-            iconTheme: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
-                return IconThemeData(color: selectedColor);
-              }
-              return IconThemeData(color: unselectedColor);
-            }),
+            iconTheme: MaterialStateProperty.resolveWith(
+              (states) {
+                if (states.contains(MaterialState.selected)) {
+                  return IconThemeData(color: selectedColor);
+                }
+                return IconThemeData(color: unselectedColor);
+              },
+            ),
           ),
           child: NavigationBar(
             height: 70,
@@ -52,7 +53,7 @@ class NavigationScreen extends StatelessWidget {
             destinations: const [
               NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
               NavigationDestination(
-                  icon: Icon(Iconsax.airplane), label: 'My Trips'),
+                  icon: Icon(Iconsax.airplane), label: 'My Bookings'),
               NavigationDestination(
                   icon: Icon(Iconsax.note_favorite), label: 'WishLists'),
               NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
@@ -70,8 +71,8 @@ class NavigationController extends GetxController {
 
   final screens = [
     const Homepage(),
-    const MyTrips(),
+    const MyBookingsScreen(),
     const Wishlists(),
-    const Profile(),
+    const ProfileScreen(),
   ];
 }

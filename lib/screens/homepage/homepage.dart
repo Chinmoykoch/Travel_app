@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:traver/screens/detail_pages/events/event_details.dart';
+import 'package:traver/screens/detail_pages/hotel_details.dart';
 import 'package:traver/screens/homepage/widgets/city_cards.dart';
 import 'package:traver/screens/homepage/widgets/event_cards.dart';
 import 'package:traver/screens/homepage/widgets/event_happenings/event_happenings.dart';
@@ -192,14 +193,24 @@ class Homepage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       final data = demoData[index];
-
-                      return EventCards(
-                        height: height,
-                        width: width,
-                        image: data['image']!,
-                        title: data['title']!,
-                        location: data['location']!,
-                        time: data['time']!,
+                      return GestureDetector(
+                        onTap: () {
+                          final detailData = eventDetails[index];
+                          Get.to(() => EventDetailsScreen(
+                                image: detailData["image"]!,
+                                eventname: detailData["name"]!,
+                                location: detailData["location"]!,
+                                description: detailData["description"]!,
+                              ));
+                        },
+                        child: EventCards(
+                          height: height,
+                          width: width,
+                          image: data['image']!,
+                          title: data['title']!,
+                          location: data['location']!,
+                          time: data['time']!,
+                        ),
                       );
                     },
                   ),
@@ -278,6 +289,8 @@ class Homepage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              // hotels section
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8),
@@ -291,14 +304,28 @@ class Homepage extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       final hotelData = hotelList[index];
-                      return HotelCards(
-                          image: hotelData['image']!,
-                          name: hotelData['name']!,
-                          location: hotelData['location']!,
-                          rating: hotelData['rating']!,
-                          user: hotelData['user']!,
-                          height: height,
-                          width: width);
+                      return GestureDetector(
+                        onTap: () {
+                          final detailData = hotelDetails[index];
+                          Get.to(() => HotelDetailsPages(
+                                image: detailData['image']!,
+                                name: detailData['name']!,
+                                location: detailData['location']!,
+                                description: detailData['description']!,
+                                rating: detailData['rating']!,
+                                review1: detailData['review1']!,
+                                review2: detailData['review2']!,
+                              ));
+                        },
+                        child: HotelCards(
+                            image: hotelData['image']!,
+                            name: hotelData['name']!,
+                            location: hotelData['location']!,
+                            rating: hotelData['rating']!,
+                            user: hotelData['user']!,
+                            height: height,
+                            width: width),
+                      );
                     },
                   ),
                 ),
